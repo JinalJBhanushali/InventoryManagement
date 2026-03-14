@@ -1,0 +1,32 @@
+.sidebar{
+  width:220px;
+  background:white;
+  padding:20px;
+  box-shadow:2px 0 10px rgba(0,0,0,0.05);
+  height: 100vh;
+  display: flex;
+  flex-direction: column;
+}
+
+.logo{
+  font-weight:bold;
+  font-size:20px;
+  margin-bottom:30px;
+}
+
+ul{
+  list-style:none;
+  padding:0;
+}
+
+li{
+  padding:12px;
+  border-radius:8px;
+  margin-bottom:10px;
+  cursor:pointer;
+}
+
+.active{
+  background:#f0e6ff;
+  color:#7c4dff;
+}

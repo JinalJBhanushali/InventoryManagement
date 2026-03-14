@@ -1,0 +1,67 @@
+<div class="card">
+
+  <div class="card-header">
+    <h2>Add Order</h2>
+
+    <button mat-stroked-button color="primary" routerLink="/order">
+      Back
+    </button>
+  </div>
+
+  <form class="order-form">
+
+    <div class="form-row">
+
+      <mat-form-field appearance="outline">
+        <mat-label>Customer Name</mat-label>
+        <input matInput placeholder="Enter customer name">
+      </mat-form-field>
+
+      <mat-form-field appearance="outline">
+        <mat-label>Amount</mat-label>
+        <input matInput type="number" placeholder="Enter amount">
+      </mat-form-field>
+
+    </div>
+
+    <div class="form-row">
+
+      <mat-form-field appearance="outline">
+        <mat-label>Status</mat-label>
+        <mat-select>
+          <mat-option value="Pending">Pending</mat-option>
+          <mat-option value="Processing">Processing</mat-option>
+          <mat-option value="Shipped">Shipped</mat-option>
+          <mat-option value="Delivered">Delivered</mat-option>
+        </mat-select>
+      </mat-form-field>
+
+      <mat-form-field appearance="outline">
+        <mat-label>Month</mat-label>
+        <mat-select>
+            @for (m of months; track m){
+                <mat-option [value]="m">
+                            {{m}}
+                </mat-option>
+            }
+          
+        </mat-select>
+      </mat-form-field>
+
+    </div>
+
+    <div class="form-actions">
+
+      <button mat-raised-button color="primary">
+        Save Order
+      </button>
+
+      <button mat-stroked-button routerLink="/order">
+        Cancel
+      </button>
+
+    </div>
+
+  </form>
+
+</div>
