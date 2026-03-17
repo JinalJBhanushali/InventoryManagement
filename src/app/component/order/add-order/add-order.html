@@ -1,25 +1,41 @@
 <div class="card">
 
   <div class="card-header">
-    <h2>Add Order</h2>
-
-    <button mat-stroked-button color="primary" routerLink="/order">
-      Back
-    </button>
+    <h2>{{title}} Order</h2>
   </div>
 
-  <form class="order-form">
+  <form class="order-form" [formGroup]="orderForm">
 
     <div class="form-row">
-
+      <mat-form-field appearance="outline">
+        <mat-label>Order ID</mat-label>
+        <input formControlName="orderId" matInput placeholder="Enter order ID">
+        @if (orderForm.get('orderId')?.invalid || orderForm.get('orderId')?.touched) {
+          <mat-error>Order ID is required</mat-error>
+        }
+      </mat-form-field>
+      
       <mat-form-field appearance="outline">
         <mat-label>Customer Name</mat-label>
-        <input matInput placeholder="Enter customer name">
+        <mat-select formControlName="customerName">
+            @for (m of customerList; track m.id){
+                <mat-option [value]="m.customerName">
+                            {{m.customerName}}
+                </mat-option>
+            }
+          
+        </mat-select>
+        @if (orderForm.get('customerName')?.invalid || orderForm.get('customerName')?.touched) {
+          <mat-error>Customer Name is required</mat-error>
+        }
       </mat-form-field>
 
       <mat-form-field appearance="outline">
         <mat-label>Amount</mat-label>
-        <input matInput type="number" placeholder="Enter amount">
+        <input formControlName="amount" matInput type="number" placeholder="Enter amount">
+        @if (orderForm.get('amount')?.invalid || orderForm.get('amount')?.touched) {
+          <mat-error>Amount is required</mat-error>
+        }
       </mat-form-field>
 
     </div>
@@ -28,17 +44,21 @@
 
       <mat-form-field appearance="outline">
         <mat-label>Status</mat-label>
-        <mat-select>
-          <mat-option value="Pending">Pending</mat-option>
-          <mat-option value="Processing">Processing</mat-option>
-          <mat-option value="Shipped">Shipped</mat-option>
-          <mat-option value="Delivered">Delivered</mat-option>
+        <mat-select formControlName="status">
+            @for (s of statusList; track s){
+                <mat-option [value]="s">
+                            {{s}}
+                </mat-option>
+            }
         </mat-select>
+         @if (orderForm.get('status')?.invalid || orderForm.get('status')?.touched) {
+             <mat-error>Status is required</mat-error>
+          }
       </mat-form-field>
 
       <mat-form-field appearance="outline">
         <mat-label>Month</mat-label>
-        <mat-select>
+        <mat-select formControlName="orderMonth">
             @for (m of months; track m){
                 <mat-option [value]="m">
                             {{m}}
@@ -46,17 +66,18 @@
             }
           
         </mat-select>
+            @if (orderForm.get('orderMonth')?.invalid || orderForm.get('orderMonth')?.touched) {
+                <mat-error>Month is required</mat-error>
+            }
       </mat-form-field>
 
     </div>
 
     <div class="form-actions">
-
-      <button mat-raised-button color="primary">
-        Save Order
+      <button mat-raised-button color="primary" (click)="saveOrder()">
+        {{title}}
       </button>
-
-      <button mat-stroked-button routerLink="/order">
+      <button mat-stroked-button (click)="closeDialog()">
         Cancel
       </button>
 

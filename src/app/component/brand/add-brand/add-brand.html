@@ -1,0 +1,35 @@
+<div class="card">
+
+  <div class="card-header">
+    <h2>{{title}} Brand</h2>
+  </div>
+
+  <form class="order-form" [formGroup]="brandForm">
+
+    <div class="form-row">
+        <mat-form-field appearance="outline">
+            <mat-label>Brand Name</mat-label>
+            <input formControlName="name" matInput placeholder="Enter brand name">
+            @if (brandForm.get('name')?.invalid || brandForm.get('name')?.touched) {
+            <mat-error>Brand Name is required</mat-error>
+            }
+        </mat-form-field>
+
+
+
+    </div>
+
+    <div class="form-actions">
+      <button mat-raised-button color="primary" (click)="saveBrand()">
+        {{title}}
+      </button>
+      <button mat-stroked-button (click)="closeDialog()">
+        Cancel
+      </button>
+
+    </div>
+
+  </form>
+
+</div>
+      

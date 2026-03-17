@@ -1,0 +1,74 @@
+
+    <div class="card">
+        <div class="card-header">
+            <h3>Product List
+            </h3>
+            <div class="header-actions">
+                <button mat-stroked-button color="primary" routerLink="/brand">
+                    Brand List
+                </button>
+                <button mat-stroked-button color="primary" (click)="openAddProductDialog()">
+                    + Add Product
+                </button>
+            </div>
+        </div>
+
+        <table mat-table [dataSource]="dataSource" class="mat-elevation-z8 demo-table">
+            <!-- Brand -->
+            <ng-container matColumnDef="brandName">
+                <th mat-header-cell *matHeaderCellDef> Brand </th>
+                <td mat-cell *matCellDef="let element"> {{element.brandName}} </td>
+            </ng-container>
+            <ng-container matColumnDef="size">
+                <th mat-header-cell *matHeaderCellDef> Size (ml) </th>
+                <td mat-cell *matCellDef="let element"> {{element.size}}</td>
+            </ng-container>
+
+            <ng-container matColumnDef="bunch">
+                <th mat-header-cell *matHeaderCellDef> Bunch </th>
+                <td mat-cell *matCellDef="let element"> {{element.bunch}} </td>
+            </ng-container>
+            <ng-container matColumnDef="price">
+                <th mat-header-cell *matHeaderCellDef> Price </th>
+                <td mat-cell *matCellDef="let element"> {{element.price | currency : 'INR'}} </td>
+            </ng-container>
+
+            <ng-container matColumnDef="update">
+                <th mat-header-cell *matHeaderCellDef> Update </th>
+                <td mat-cell *matCellDef="let element">
+                    <button mat-button color="primary" (click)="openAddProductDialog(element)">
+                        Update
+                    </button>
+                </td>
+            </ng-container>
+            <ng-container matColumnDef="delete">
+                <th mat-header-cell *matHeaderCellDef> Delete </th>
+                <td mat-cell *matCellDef="let element">
+                    <button mat-button color="primary" (click)="deleteProductDialog(element)">
+                        Delete
+                    </button>
+                </td>
+            </ng-container>
+
+            <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+            <tr mat-row (click)="clickedRows.add(row)" [class.demo-row-is-clicked]="clickedRows.has(row)"
+                *matRowDef="let row; columns: displayedColumns;"></tr>
+        </table>
+
+        <mat-paginator [pageSizeOptions]="[5, 10, 20]" showFirstLastButtons
+            aria-label="Select page of periodic elements">
+        </mat-paginator>
+    </div>
+
+
+<ng-template #callAPIDialog let-data>
+    <h2 matDialogTitle>Product : {{ data.product.brandName }} of {{ data.product.bunch }} bottles bunch</h2>
+    <mat-dialog-content>
+        Are you sure you want to delete this product?
+    </mat-dialog-content>
+    <mat-dialog-actions align="end">
+        <button mat-button matDialogClose="no">No</button>
+        <button mat-button matDialogClose="yes">Yes</button>
+    </mat-dialog-actions>
+</ng-template>
+

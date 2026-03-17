@@ -32,7 +32,7 @@ export class OrdersChart {
       const index = event.active[0].index;
       var month = this.months[index];
       this.orderService.setOrderMonth(month);
-      this.router.navigate(['/orders']);
+      this.router.navigate(['/order']);
       console.log("Clicked month:", month);
     }
   }

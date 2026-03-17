@@ -1,5 +1,5 @@
 .sidebar{
-  width:220px;
+  width:170px;
   background:white;
   padding:20px;
   box-shadow:2px 0 10px rgba(0,0,0,0.05);
@@ -29,4 +29,28 @@ li{
 .active{
   background:#f0e6ff;
   color:#7c4dff;
+}
+
+.menu-parent {
+  cursor: pointer;
+  display: flex;
+  justify-content: space-between;
+}
+
+.submenu {
+  list-style: none;
+  padding-left: 30px;
+}
+.submenu {
+  list-style: none;
+  padding-left: 30px;
+}
+
+.submenu li {
+  padding: 6px 10px;
+  font-size: 14px;
+}
+
+.arrow {
+  font-size: 12px;
 }

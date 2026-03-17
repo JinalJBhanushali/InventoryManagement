@@ -1,0 +1,66 @@
+<div class="card">
+
+  <div class="card-header">
+    <h2>{{title}} Product</h2>
+  </div>
+
+  <form class="order-form" [formGroup]="productForm">
+
+    <div class="form-row">
+      <mat-form-field appearance="outline">
+        <mat-label>Brand Name</mat-label>
+        <mat-select formControlName="brandName">
+          @for (brand of brands; track brand.id) {
+            <mat-option [value]="brand.name">{{ brand.name }}</mat-option>
+          }
+        </mat-select>
+        @if (productForm.get('brandName')?.value=='' || productForm.get('brandName')?.touched) {
+          <mat-error>Brand Name is required</mat-error>
+        } 
+      </mat-form-field>
+
+      <mat-form-field appearance="outline">
+        <mat-label>Size</mat-label>
+        <input formControlName="size" matInput placeholder="Enter size">
+        @if (productForm.get('size')?.value==null && productForm.get('size')?.touched) {
+          <mat-error>Size is required</mat-error>
+        } @else if (productForm.get('size')?.errors?.['pattern']) {
+          <mat-error>Size must contain only digits</mat-error>
+        }
+      </mat-form-field>
+<mat-form-field appearance="outline">
+        <mat-label>Bunch</mat-label>
+        <input formControlName="bunch" matInput placeholder="Enter bunch">
+        @if (productForm.get('bunch')?.value==null && productForm.get('bunch')?.touched) {
+          <mat-error>Bunch is required</mat-error>
+        } @else if (productForm.get('bunch')?.errors?.['pattern']) {
+          <mat-error>Bunch must contain only digits</mat-error>
+        }
+      </mat-form-field>
+      <mat-form-field appearance="outline">
+        <mat-label>Price</mat-label>
+        <input formControlName="price" matInput placeholder="Enter price">
+        @if (productForm.get('price')?.value==null && productForm.get('price')?.touched) {
+          <mat-error>Price is required</mat-error>
+        }@else if (productForm.get('price')?.errors?.['pattern']) {
+          <mat-error>Price must contain only digits</mat-error>
+        }
+      </mat-form-field>
+
+
+    </div>
+
+    <div class="form-actions">
+      <button mat-raised-button color="primary" (click)="saveProduct()">
+        {{title}}
+      </button>
+      <button mat-stroked-button (click)="closeDialog()">
+        Cancel
+      </button>
+
+    </div>
+
+  </form>
+
+</div>
+      

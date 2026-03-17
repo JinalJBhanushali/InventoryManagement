@@ -1,48 +1,160 @@
 <div class="card">
     <div class="card-header">
-        <h3>Recent Orders</h3>
+        <h3>Recent Orders of
+            @if(orderMonth!=''){
+            <span class="badge">{{orderMonth}}</span>
+            } @else {
+            <span class="badge">2025</span>
+            }
+        </h3>
         <div class="header-actions">
-            <button mat-stroked-button color="primary">
+            <button mat-stroked-button color="primary" (click)="viewAllOrders()">
                 View All
             </button>
 
-            <button mat-stroked-button color="primary" routerLink="/order/add">
+            <button mat-stroked-button color="primary" (click)="openAddOrderDialog()">
                 + Add Order
             </button>
         </div>
     </div>
 
-    <table mat-table [dataSource]="dataSource" class="custom-table">
+    <mat-form-field>
+        <mat-label>Search</mat-label>
+        <input matInput (keyup)="applyFilter($event)" placeholder="Search by Order Id, Customer, etc" #input>
+    </mat-form-field>
+    <table mat-table [dataSource]="dataSource" matSort (matSortChange)="announceSortChange($event)"
+        class="mat-elevation-z8 demo-table">
 
         <ng-container matColumnDef="orderId">
-            <th mat-header-cell *matHeaderCellDef> Order ID </th>
+            <th mat-header-cell *matHeaderCellDef mat-sort-header sortActionDescription="Sort by order ID"> Order ID
+            </th>
             <td mat-cell *matCellDef="let element"> {{element.orderId}} </td>
         </ng-container>
 
         <!-- Customer -->
-        <ng-container matColumnDef="customer">
-            <th mat-header-cell *matHeaderCellDef> Customer </th>
-            <td mat-cell *matCellDef="let element"> {{element.customer}} </td>
+        <ng-container matColumnDef="customerName">
+            <th mat-header-cell *matHeaderCellDef mat-sort-header sortActionDescription="Sort by customer"> Customer
+            </th>
+            <td mat-cell *matCellDef="let element"> {{element.customerName}} </td>
         </ng-container>
 
         <!-- Amount -->
         <ng-container matColumnDef="amount">
-            <th mat-header-cell *matHeaderCellDef> Amount </th>
-            <td mat-cell *matCellDef="let element"> {{element.amount | currency}} </td>
+            <th mat-header-cell *matHeaderCellDef mat-sort-header sortActionDescription="Sort by amount"> Amount </th>
+            <td mat-cell *matCellDef="let element"> {{element.amount | currency :'INR':'symbol':'1.2-2':'en-IN'}} </td>
         </ng-container>
 
         <!-- Status -->
         <ng-container matColumnDef="status">
-            <th mat-header-cell *matHeaderCellDef> Status </th>
+            <th mat-header-cell *matHeaderCellDef mat-sort-header sortActionDescription="Sort by status"> Status </th>
             <td mat-cell *matCellDef="let element">
                 <span class="status">{{element.status}}</span>
             </td>
         </ng-container>
+        <ng-container matColumnDef="view">
+            <th mat-header-cell *matHeaderCellDef> View </th>
+            <td mat-cell *matCellDef="let element">
+                <button mat-button color="primary" (click)="openOrderDetailsDialog(element)">
+                    View Details
+                </button>
+            </td>
+        </ng-container>
+        <ng-container matColumnDef="update">
+            <th mat-header-cell *matHeaderCellDef> Update </th>
+            <td mat-cell *matCellDef="let element">
+                <button mat-button color="primary" (click)="openAddOrderDialog(element)">
+                    Update
+                </button>
+            </td>
+        </ng-container>
+        <ng-container matColumnDef="delete">
+            <th mat-header-cell *matHeaderCellDef> Delete </th>
+            <td mat-cell *matCellDef="let element">
+                <button mat-button color="primary" (click)="deleteOrderDialog(element.orderId)">
+                    Delete
+                </button>
+            </td>
+        </ng-container>
 
         <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
-        <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+        <!-- <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr> -->
+        <tr mat-row (click)="clickedRows.add(row)" [class.demo-row-is-clicked]="clickedRows.has(row)"
+            *matRowDef="let row; columns: displayedColumns;"></tr>
     </table>
 
     <mat-paginator [pageSizeOptions]="[5, 10, 20]" showFirstLastButtons aria-label="Select page of periodic elements">
     </mat-paginator>
 </div>
+<ng-template #callAPIDialog let-data>
+    <h2 matDialogTitle>OrderId : {{ data.orderId }}</h2>
+    <mat-dialog-content>
+        Are you sure you want to delete this order?
+    </mat-dialog-content>
+    <mat-dialog-actions align="end">
+        <button mat-button matDialogClose="no">No</button>
+        <button mat-button matDialogClose="yes">Yes</button>
+    </mat-dialog-actions>
+</ng-template>
+<ng-template #orderDetailsDialog let-data>
+    <h2 matDialogTitle>Order Details for orderId : {{ data.order.orderId }}</h2>
+    <mat-dialog-content>
+
+        @if(data.order.subOrders && data.order.subOrders.length > 0) {
+        <h3>Total Amount {{ data.order.amount | currency :'INR':'symbol':'1.2-2':'en-IN' }}</h3>
+        <table mat-table [dataSource]="subOrdersDataSource" class="mat-elevation-z8 demo-table">
+
+            <ng-container matColumnDef="brandName">
+                <th mat-header-cell *matHeaderCellDef> Brand Name
+                </th>
+                <td mat-cell *matCellDef="let element"> {{element.brandName}} </td>
+            </ng-container>
+            <ng-container matColumnDef="bunch">
+                <th mat-header-cell *matHeaderCellDef> Bunch
+                </th>
+                <td mat-cell *matCellDef="let element"> {{element.bunch}} </td>
+            </ng-container>
+            <ng-container matColumnDef="size">
+                <th mat-header-cell *matHeaderCellDef> Size (ml) </th>
+                <td mat-cell *matCellDef="let element"> {{element.size}} </td>
+            </ng-container>
+            <ng-container matColumnDef="price">
+                <th mat-header-cell *matHeaderCellDef> Price </th>
+                <td mat-cell *matCellDef="let element"> {{element.price | currency :'INR':'symbol':'1.2-2':'en-IN'}} </td>
+            </ng-container>
+            <ng-container matColumnDef="quantity">
+                <th mat-header-cell *matHeaderCellDef> Quantity </th>
+                <td mat-cell *matCellDef="let element"> {{element.quantity}} </td>
+            </ng-container>
+             <ng-container matColumnDef="amount">
+                <th mat-header-cell *matHeaderCellDef> Amount </th>
+                <td mat-cell *matCellDef="let element"> {{element.quantity * element.bunch * element.price | currency :'INR':'symbol':'1.2-2':'en-IN'}} </td>
+            </ng-container>
+             <ng-container matColumnDef="update">
+            <th mat-header-cell *matHeaderCellDef> Update </th>
+            <td mat-cell *matCellDef="let element">
+                <button mat-button color="primary" (click)="openAddOrderDialog(element)">
+                    Update
+                </button>
+            </td>
+        </ng-container>
+        <ng-container matColumnDef="delete">
+            <th mat-header-cell *matHeaderCellDef> Delete </th>
+            <td mat-cell *matCellDef="let element">
+                <button mat-button color="primary" (click)="deleteOrderDialog(element.orderId)">
+                    Delete
+                </button>
+            </td>
+        </ng-container>
+            <tr mat-header-row *matHeaderRowDef="subOrdersDisplayedColumns"></tr>
+            <!-- <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr> -->
+            <tr mat-row (click)="clickedRows.add(row)" [class.demo-row-is-clicked]="clickedRows.has(row)"
+                *matRowDef="let row; columns: subOrdersDisplayedColumns;"></tr>
+        </table>
+        } @else {
+        <p>No sub orders available.</p>
+        }
+    </mat-dialog-content>
+    <mat-dialog-actions align="end">
+        <button mat-button matDialogClose>Close</button>
+    </mat-dialog-actions>
+</ng-template>

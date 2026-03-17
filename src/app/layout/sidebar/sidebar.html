@@ -1,15 +1,82 @@
 <div class="sidebar">
 
   <div class="logo">
-    Qargo
+    7 Waters
   </div>
 
   <ul>
-    <li [routerLinkActive]="['active']" routerLink="dashboard">Dashboard</li>
-    <li [routerLinkActive]="['active']" routerLink="shipping">Shipping</li>
-    <li [routerLinkActive]="['active']" routerLink="order">Orders</li>
-    <li [routerLinkActive]="['active']" routerLink="analytics">Analytics</li>
-    <li [routerLinkActive]="['active']" routerLink="settings">Settings</li>
+
+    <li routerLink="dashboard" routerLinkActive="active">
+      Dashboard
+    </li>
+    <li routerLink="product" routerLinkActive="active">
+      Product
+    </li>
+    <li routerLink="inventory" routerLinkActive="active">
+      Inventory
+    </li>
+
+    <li routerLink="production" routerLinkActive="active">
+      Production
+    </li>
+
+    <li routerLink="customer" routerLinkActive="active">
+      Customers
+    </li>
+
+    <li routerLink="order" routerLinkActive="active">
+      Orders
+    </li>
+
+    <!-- Invoice Parent -->
+    <li (click)="toggleInvoice()" class="menu-parent">
+
+      Invoice
+
+      <span class="arrow">
+        {{ invoiceOpen ? '▼' : '▶' }}
+      </span>
+
+    </li>
+
+    @if(invoiceOpen){
+    <ul class="submenu">
+
+      <li routerLink="invoice/challan" routerLinkActive="active">
+        Challan
+      </li>
+
+      <li routerLink="invoice/sales" routerLinkActive="active">
+        Sales Invoice
+      </li>
+
+      <li routerLink="invoice/purchase" routerLinkActive="active">
+        Purchase Invoice
+      </li>
+
+      <li routerLink="invoice/sales-return" routerLinkActive="active">
+        Sales Return
+      </li>
+
+      <li routerLink="invoice/purchase-return" routerLinkActive="active">
+        Purchase Return
+      </li>
+
+      <li routerLink="invoice/quotation" routerLinkActive="active">
+        Quotation
+      </li>
+
+    </ul>
+    }
+
+    <li routerLink="payment" routerLinkActive="active">
+      Payments
+    </li>
+
+    <li routerLink="report" routerLinkActive="active">
+      Reports
+    </li>
+
   </ul>
 
 </div>
